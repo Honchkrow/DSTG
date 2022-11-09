@@ -98,7 +98,7 @@ data_process <- function(st_count,st_label,anova){
         Seurat::Idents(object = tem.t1) <- tem.t1@meta.data$subclass
 
         #' convert scRNA-seq data to pseudo-spatial data                                                                                                                          
-        test.spot.ls1<-SPOTlight::test_spot_fun(se_obj=tem.t1,clust_vr='subclass',n=1000);
+        test.spot.ls1<-test_spot_fun(se_obj=tem.t1,clust_vr='subclass',n=1000);
         test.spot.counts1 <- as.matrix(test.spot.ls1[[1]])
         colnames(test.spot.counts1)<-paste("mixt",1:ncol(test.spot.counts1),sep="_");
         metadata1 <- test.spot.ls1[[2]]
@@ -110,7 +110,8 @@ data_process <- function(st_count,st_label,anova){
         label.list2 <- do.call("rbind", rep(list(st_label[[1]]), round(N2/N1)+1))[1:N2,]
         st_labels <- list(st_label[[1]],label.list2)
     } else {
-        st_counts <- st_count; st_labels=st_label }
+        st_counts <- st_count; st_labels=st_label 
+        }
     res1 <- normalize_data(st_counts)
     st_norm <- res1[[1]]; variable_gene <- res1[[2]];
     st_scale <- scale_data(st_counts,st_norm,variable_gene)
@@ -156,7 +157,7 @@ Convert_Data <- function(count.list,label.list,anova=TRUE){
 
 # se_obj is a seurat object.
 
-test_spot_fun = function (se_obj, clust_vr, n = 1000, verbose = TRUE){
+test_spot_fun <- function (se_obj, clust_vr, n = 1000, verbose = TRUE){
   if (is(se_obj) != "Seurat") 
     stop("ERROR: se_obj must be a Seurat object!")
   if (!is.character(clust_vr)) 
